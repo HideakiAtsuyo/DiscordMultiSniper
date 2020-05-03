@@ -11,19 +11,19 @@
 
   <ItemGroup>
     <Reference Include="Anarchy">
-      <HintPath>..\packages\Anarchy.dll</HintPath>
+      <HintPath>..\..\..\..\OpenDiscordHaxx-master\OpenDiscordHaxx\bin\Debug\Anarchy.dll</HintPath>
     </Reference>
     <Reference Include="Leaf.xNet">
-      <HintPath>..\packages\Leaf.xNet.dll</HintPath>
+      <HintPath>..\..\..\..\OpenDiscordHaxx-master\OpenDiscordHaxx\bin\Debug\Leaf.xNet.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json.Schema">
-      <HintPath>..\packages\Newtonsoft.Json.Schema.dll</HintPath>
+      <HintPath>..\..\..\..\OpenDiscordHaxx-master\OpenDiscordHaxx\bin\Debug\Newtonsoft.Json.Schema.dll</HintPath>
     </Reference>
     <Reference Include="websocket-sharp-with-proxy-support">
-      <HintPath>..\packages\websocket-sharp-with-proxy-support.dll</HintPath>
+      <HintPath>..\..\..\..\OpenDiscordHaxx-master\OpenDiscordHaxx\bin\Debug\websocket-sharp-with-proxy-support.dll</HintPath>
     </Reference>
   </ItemGroup>
 

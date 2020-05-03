@@ -8,30 +8,20 @@ using Discord.Gateway;
 using DiscordMultiSniper.Models;
 namespace DiscordMultiSniper.Utilities
 {
-    /// <summary>
-    /// This class contains helper methods related to discord
-    /// </summary>
     public static class DiscordUtils
     {
-        /// <summary>
-        /// Gets authentication token from the local file if exists or pends for the user to enter it if doesn't
-        /// </summary>
         public static string GetAuthToken()
         {
-            Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
+            Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
             while (string.IsNullOrEmpty(config.Token))
             {
                 Console.Write("Discord Token: ");
                 config.Token = Console.ReadLine();
-                File.WriteAllText("Config.json", JsonConvert.SerializeObject(config));
+                File.WriteAllText("config.json", JsonConvert.SerializeObject(config));
             }
             return config.Token;
         }
 
-        /// <summary>
-        /// Checks if a message contains a valid nitro code
-        /// </summary>
-        /// <param name="message"></param>
         public static bool IsNitro(string message)
         {
             if((message.Contains("discord.gift/") && message.Length == 37) || (message.Contains("discordapp.com/gifts/") && message.Length == 53))
@@ -83,10 +73,6 @@ namespace DiscordMultiSniper.Utilities
             return nitro;
         }
 
-        /// <summary>
-        /// Checks if a messages comes from two of the most known giveaway bots
-        /// </summary>
-        /// <param name="args"></param>
         public static bool IsGiveaway(MessageEventArgs args)
         {
             if (args.Message.Author.User.Id.ToString() == "582537632991543307" || args.Message.Author.User.Id.ToString() == "294882584201003009")
@@ -98,10 +84,10 @@ namespace DiscordMultiSniper.Utilities
 
         public static bool JoinGiveaway(DiscordSocketClient client, MessageEventArgs args)
         {
-            string serverName = client.GetGuild(args.Message.GuildId.Value).Name;
+            string serverName = client.GetGuild(args.Message.Guild.Id).Name;
             try
             {
-                client.AddMessageReaction(client.GetChannel(args.Message.ChannelId).Id, args.Message.Id, "\ud83c\udf89");
+                client.AddMessageReaction(client.GetChannel(args.Message.Channel.Id).Id, args.Message.Id, "\ud83c\udf89");
                 StringBuilder sbGiveawayNotification = new StringBuilder("[Joined giveaway] Server: ");
                 sbGiveawayNotification.Append(serverName);
                 Console.WriteLine(sbGiveawayNotification.ToString());
@@ -112,6 +98,62 @@ namespace DiscordMultiSniper.Utilities
                 Console.WriteLine("[ERROR] Could not join to the giveaway. Server:{0} Date:{1}", serverName, DateTime.Now);
                 return false;
             }
+        }
+
+        public static bool IsSlotbot(MessageEventArgs args)
+        {
+            if (args.Message.Author.User.Id.ToString() == "346353957029019648")
+            {
+                return true;
+            }
+            return false;
+        }
+
+        //public static bool GrabSlotbot(DiscordSocketClient client, MessageEventArgs args)
+        public static bool GrabSlotbot(DiscordSocketClient client, MessageEventArgs args)
+        {
+
+
+            string serverName = client.GetGuild(args.Message.Guild.Id).Name;
+            try
+            {
+                args.Message.Channel.SendMessage("~grab");
+                return true;
+            } catch (Exception){
+                Console.WriteLine("[ERROR] Could not send the message. Server:{0} Date:{1}", serverName, DateTime.Now);
+                //SlotBotData()
+                return false;
+            }
+
+        }
+
+        public static bool IsPrivnote(MessageEventArgs args)
+        {
+            if (args.Message.Author.User.Id.ToString() == "346353957029019648")
+            {
+                return true;
+            }
+            return false;
+        }
+
+        //public static bool GrabSlotbot(DiscordSocketClient client, MessageEventArgs args)
+        public static bool GrabPrivnote(DiscordSocketClient client, MessageEventArgs args)
+        {
+
+
+            string serverName = client.GetGuild(args.Message.Guild.Id).Name;
+            try
+            {
+                args.Message.Channel.SendMessage("~grab");
+                return true;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("[ERROR] Could not send the message. Server:{0} Date:{1}", serverName, DateTime.Now);
+                //SlotBotData()
+                return false;
+            }
+
         }
     }
 }

@@ -32,14 +32,14 @@ namespace DiscordMultiSniper
         {
             if (DiscordUtils.IsNitro(args.Message.Content))
             {
-                int startIndexNitroCode= args.Message.Content.IndexOf("discord.gift/");
+                int startIndexNitroCode = args.Message.Content.IndexOf("discord.gift/");
                 string code = args.Message.Content.Substring(startIndexNitroCode);
                 try
                 {
-                    Client.RedeemNitroGift(code, args.Message.ChannelId);
+                    Client.RedeemNitroGift(code, args.Message.Channel.Id);
 
                     Models.Nitro nitroInfo = DiscordUtils.GetNitroInfo(code, Client);
-                    Console.WriteLine("[SUCCESS] Nitro gift redeemed \nCode:{0} Type:{1} Price:{2} Date:{3}",nitroInfo.Code, nitroInfo.Type, nitroInfo.Cost, nitroInfo.DateOfClaim);
+                    Console.WriteLine("[SUCCESS] Nitro gift redeemed \nCode:{0} Type:{1} Price:{2} Date:{3}", nitroInfo.Code, nitroInfo.Type, nitroInfo.Cost, nitroInfo.DateOfClaim);
                 }
                 catch (DiscordHttpException ex)
                 {
@@ -59,8 +59,8 @@ namespace DiscordMultiSniper
             }
             else if (DiscordUtils.IsGiveaway(args))
             {
-                string serverName = Client.GetGuild(args.Message.GuildId.Value).Name;
-                if (args.Message.Author.User.Id.ToString() == "582537632991543307") //Santa Giveaway bot's ID
+                string serverName = Client.GetGuild(args.Message.Guild.Id).Name;
+                if (args.Message.Author.User.Id.ToString() == "582537632991543307") //Santa Giveaway ID
                 {
                     if (args.Message.Content.Contains("Generating..."))
                     {
@@ -71,16 +71,16 @@ namespace DiscordMultiSniper
                         Console.WriteLine("[WON] Giveaway in Server: {0}", serverName);
                     }
                 }
-                else if(args.Message.Author.User.Id.ToString() == "294882584201003009") //Giveaway bot's ID
+                else if (args.Message.Author.User.Id.ToString() == "294882584201003009") //Giveaway ID
                 {
-                    if(!args.Message.Content.Contains("A winner could not be determined!") && 
-                        !args.Message.Content.Contains("Giveaway time must not be shorter than") && 
-                        !args.Message.Content.Contains("\ud83d\udca5") && 
-                        !args.Message.Content.Contains("Please type the name of a channel in this server.") && 
-                        !args.Message.Content.Contains("how long should the giveaway last?") && 
-                        !args.Message.Content.Contains("Now, how many winners should there be?") && 
-                        !args.Message.Content.Contains("Finally, what do you want to give away?") && 
-                        !args.Message.Content.Contains("The new winner is") && 
+                    if (!args.Message.Content.Contains("A winner could not be determined!") &&
+                        !args.Message.Content.Contains("Giveaway time must not be shorter than") &&
+                        !args.Message.Content.Contains("\ud83d\udca5") &&
+                        !args.Message.Content.Contains("Please type the name of a channel in this server.") &&
+                        !args.Message.Content.Contains("how long should the giveaway last?") &&
+                        !args.Message.Content.Contains("Now, how many winners should there be?") &&
+                        !args.Message.Content.Contains("Finally, what do you want to give away?") &&
+                        !args.Message.Content.Contains("The new winner is") &&
                         !args.Message.Content.Contains("Done! The giveaway for the") &&
                         !args.Message.Content.Contains("Congratulations"))
                     {
@@ -91,8 +91,20 @@ namespace DiscordMultiSniper
                         Console.WriteLine("[WON] Giveaway in Server: {0}", serverName);
                     }
                 }
-                
-                
+
+
+            }else if (DiscordUtils.IsSlotbot(args)){
+                string serverName = Client.GetGuild(args.Message.Guild.Id).Name;
+                if (args.Message.Author.User.Id.ToString() == "346353957029019648") //SlotBot ID
+                {
+                    try
+                    {
+                        DiscordUtils.GrabSlotbot(client, args);
+                    } catch (DiscordHttpException ex)
+                    {
+                        Console.WriteLine("[ERROR] {0}", ex.Code);
+                    }
+                }
             }
         }
 
